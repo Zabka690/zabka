@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zaba.exe</title>
+  <style>
+    body {
+      background-color: #222;
+      color: white;
+      font-family: Comic Sans MS, sans-serif;
+      text-align: center;
+      margin-top: 50px;
+      overflow: hidden;
+    }
+
+    #frog {
+      width: 300px;
+      transition: transform 1s;
+    }
+
+    .spin {
+      animation: spin 3s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .flash {
+      animation: flashBg 0.5s infinite;
+    }
+
+    @keyframes flashBg {
+      0% { background-color: magenta; }
+      50% { background-color: yellow; }
+      100% { background-color: cyan; }
+    }
+
+    #format-warning {
+      position: fixed;
+      top: 40%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: red;
+      color: white;
+      font-size: 24px;
+      padding: 20px;
+      border: 5px solid black;
+      display: none;
+      z-index: 1000;
+    }
+
+    .popup {
+      position: fixed;
+      width: 120px;
+      height: 80px;
+      background: white;
+      color: black;
+      border: 2px solid #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: bold;
+      z-index: 999;
+      animation: movePopup 10s linear infinite;
+    }
+
+    @keyframes movePopup {
+      0% {
+        top: 0;
+        left: 0;
+      }
+      100% {
+        top: 100%;
+        left: 100%;
+      }
+    }
+
+    audio {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>🐸 Kliknij 3x Spację, by obudzić żabę...</h1>
+  <img id="frog" src="https://upload.wikimedia.org/wikipedia/en/9/9d/FeelsGuyPepe.png" alt="Żaba Pepe" />
+  <div id="format-warning">💾 Wygolowywanie dysku C... Proszę czekać.</div>
+
+  <audio id="troll-audio" loop>
+    <source src="https://ia802508.us.archive.org/5/items/RickRoll/RickRoll.mp3" type="audio/mpeg">
+    Twoja przeglądarka nie obsługuje dźwięku.
+  </audio>
+
+  <script>
+    let spaceCount = 0;
+    const frog = document.getElementById("frog");
+    const audio = document.getElementById("troll-audio");
+    const warning = document.getElementById("format-warning");
+
+    document.addEventListener("keydown", (e) => {
+      if (e.code === "Space") {
+        spaceCount++;
+        if (spaceCount === 3) {
+          activateTroll();
+        }
+      }
+    });
+
+    function activateTroll() {
+      frog.classList.add("spin");
+      document.body.classList.add("flash");
+      warning.style.display = "block";
+      audio.play();
+
+      for (let i = 0; i < 15; i++) {
+        createPopup();
+      }
+    }
+
+    function createPopup() {
+      const popup = document.createElement("div");
+      popup.className = "popup";
+      popup.textContent = "🐸 Żaba atakuje!";
+      popup.style.top = Math.random() * window.innerHeight + "px";
+      popup.style.left = Math.random() * window.innerWidth + "px";
+      popup.style.animationDuration = (5 + Math.random() * 5) + "s";
+
+      document.body.appendChild(popup);
+
+      setTimeout(() => {
+        popup.remove();
+      }, 10000);
+    }
+  </script>
+</body>
+</html>
